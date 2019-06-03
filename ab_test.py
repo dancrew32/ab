@@ -59,8 +59,7 @@ class ABTestCase(unittest.TestCase):
         self.assertEqual(allocations[0], 481)
         self.assertEqual(allocations[1], 519)
 
-    @unittest.skip('Proves the distribution is pretty darn even.')
-    def test_emails(self):
+    def test_one_million_emails(self):
         emails = [str(uuid.uuid4()) for i in range(1000000)]
         allocations = ab.allocate(emails, buckets=100)
         allocation_keys = sorted([int(k) for k in allocations.keys()])
