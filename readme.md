@@ -2,7 +2,11 @@
 
 Without the need for a database, deterministically bucket users into A/B tests.
 
-## Install
+## Build Status:
+
+[![Build Status](https://travis-ci.org/dancrew32/ab.svg?branch=master)](https://travis-ci.org/dancrew32/ab)
+
+## Install:
 
 Ensure you have python3 and virtualenv installed:
 
@@ -16,7 +20,7 @@ Then make the virtualenv, install any dependencies (there aren't any at the mome
 make venv deps test
 ```
 
-## Example usage:
+## Example Usage:
 
 ```python
 import ab
@@ -44,7 +48,7 @@ def get_button_color(user_id):
     raise ab.ABTestError(f'Unexpected bucket {bucket}')
 ```
 
-## Credits
+## Credits:
 
 Thanks to Alexander Ejbekov for the allocation technique:
 
