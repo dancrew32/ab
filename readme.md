@@ -34,7 +34,7 @@ TEST_BUCKETS = (
 
 # Implemention
 def get_button_color(user_id):
-    bucket = ab.get_bucket(user_id, test='my_test_v1', buckets=[
+    bucket = ab.get_bucket(user_id, test=TEST_NAME, buckets=TEST_BUCKETS)
     if bucket == TEST_CONTROL:
         return 'green'
     if bucket == TEST_VARIANT1:
