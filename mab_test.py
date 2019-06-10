@@ -5,6 +5,7 @@ from unittest import mock
 
 import store_mock
 import mab
+import stats
 
 
 class MultiArmedBanditTestCase(unittest.TestCase):
@@ -275,6 +276,10 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertGreaterEqual(scores['variant1'], .01)
             self.assertLessEqual(scores['variant2'], .15)
             self.assertGreaterEqual(scores['variant2'], .01)
+            state = mab.get_state_with_tuples(test_name, buckets)
+            results = stats.get_results(state)
+            self.assertGreaterEqual(results['variant1'].p_value, 0.0)
+            self.assertLessEqual(results['variant1'].p_value, 0.5)
 
     # I stress tested this and it always seems to pass.
     # If it breaks, enable this because random is random.
@@ -303,3 +308,9 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertLessEqual(scores['variant1'], .35)
             self.assertGreaterEqual(scores['variant2'], .0)
             self.assertLessEqual(scores['variant2'], .15)
+            state = mab.get_state_with_tuples(test_name, buckets)
+            results = stats.get_results(state)
+            self.assertTrue(results['variant1'].is_better_than_control)
+            self.assertTrue(results['variant1'].is_significant)
+            self.assertGreaterEqual(results['variant1'].p_value, 0.0)
+            self.assertLessEqual(results['variant1'].p_value, 0.001)
