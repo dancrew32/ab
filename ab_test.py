@@ -5,12 +5,6 @@ import unittest
 import ab
 
 
-def debug(value):
-    import json
-    out = json.dumps(value, indent=2)
-    print(out)
-
-
 class ABTestCase(unittest.TestCase):
 
     def test_calc_none_bucket(self):
