@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Tuple, Dict
 import logging
 import random
 
@@ -72,6 +72,12 @@ def get_state(test: str, buckets: List[str]) -> Dict[str, int]:
             KEY_SUCCESSES: int(payload[index + 1] or 0)}
         index += 2
     return data
+
+
+def get_state_with_tuples(
+        test: str, buckets: List[str]) -> Dict[str, Tuple[int, int]]:
+    return {bucket: (item[KEY_TRIALS], item[KEY_SUCCESSES])
+            for bucket, item in get_state(test, buckets).items()}
 
 
 def get_scores(test: str, buckets: List[str]) -> Dict[str, int]:

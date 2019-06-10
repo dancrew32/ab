@@ -35,6 +35,20 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant2'][mab.KEY_TRIALS], 0)
             self.assertEqual(data['variant2'][mab.KEY_SUCCESSES], 0)
 
+    def test_get_state_with_tuples_default(self):
+        with mock.patch('store.get') as store_patch:
+            store_patch.return_value = store_mock.MockRedis()
+            test_name = 'my_test_v1'
+            buckets = ['control', 'variant1', 'variant2']
+            data = mab.get_state_with_tuples(test_name, buckets)
+            self.assertEqual(list(data.keys()), buckets)
+            self.assertEqual(data['control'][0], 0)
+            self.assertEqual(data['control'][1], 0)
+            self.assertEqual(data['variant1'][0], 0)
+            self.assertEqual(data['variant1'][1], 0)
+            self.assertEqual(data['variant2'][0], 0)
+            self.assertEqual(data['variant2'][1], 0)
+
     def test_get_state_used(self):
         with mock.patch('store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
@@ -55,6 +69,27 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant1'][mab.KEY_SUCCESSES], 1)
             self.assertEqual(data['variant2'][mab.KEY_TRIALS], 1)
             self.assertEqual(data['variant2'][mab.KEY_SUCCESSES], 0)
+
+    def test_get_state_with_tuples_used(self):
+        with mock.patch('store.get') as store_patch:
+            store_patch.return_value = store_mock.MockRedis()
+            test_name = 'my_test_v1'
+            buckets = ['control', 'variant1', 'variant2']
+            mab.trial('my_test_v1', 'control')
+            mab.trial('my_test_v1', 'control')
+            mab.success('my_test_v1', 'control')
+            mab.success('my_test_v1', 'control')
+            mab.trial('my_test_v1', 'variant1')
+            mab.success('my_test_v1', 'variant1')
+            mab.trial('my_test_v1', 'variant2')
+            data = mab.get_state_with_tuples(test_name, buckets)
+            self.assertEqual(list(data.keys()), buckets)
+            self.assertEqual(data['control'][0], 2)
+            self.assertEqual(data['control'][1], 2)
+            self.assertEqual(data['variant1'][0], 1)
+            self.assertEqual(data['variant1'][1], 1)
+            self.assertEqual(data['variant2'][0], 1)
+            self.assertEqual(data['variant2'][1], 0)
 
     def test_cold_start_exploit_explores(self):
         with mock.patch('store.get') as store_patch:
