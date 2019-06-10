@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Tuple, Dict
 import logging
 import random
 
@@ -74,12 +74,15 @@ def get_state(test: str, buckets: List[str]) -> Dict[str, int]:
     return data
 
 
+def get_state_with_tuples(
+        test: str, buckets: List[str]) -> Dict[str, Tuple[int, int]]:
+    return {bucket: (item[KEY_TRIALS], item[KEY_SUCCESSES])
+            for bucket, item in get_state(test, buckets).items()}
+
+
 def get_scores(test: str, buckets: List[str]) -> Dict[str, int]:
-    data = get_state(test, buckets)
-    scores = {}
-    for key, stats in data.items():
-        scores[key] = stats[KEY_SUCCESSES] / (stats[KEY_TRIALS] or 1)
-    return scores
+    return {key: stats[KEY_SUCCESSES] / (stats[KEY_TRIALS] or 1)
+            for key, stats in get_state(test, buckets).items()}
 
 
 def explore(test: str, buckets: List[str]) -> str:
@@ -89,6 +92,7 @@ def explore(test: str, buckets: List[str]) -> str:
 
 
 def exploit(test: str, buckets: List[str]) -> str:
+    # TODO(DAN): use stats.get_results() to pick optimal bucket.
     scores = get_scores(test, buckets)
 
     # If all buckets are even, explore.
