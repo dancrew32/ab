@@ -97,7 +97,7 @@ def z_score(test_conversion_rate: float,
     return numerator / denominator
 
 
-def p_value(z_score):
+def p_value(z_score: float) -> float:
     """Statistical significance. Lower = better."""
     return scipy.stats.norm.sf(abs(z_score))
 

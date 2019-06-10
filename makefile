@@ -26,3 +26,6 @@ stress_test_mab:
 
 demo_mab:
 	./venv/bin/python mab_demo.py
+
+checkin: test
+	git add -A && git commit && git push
