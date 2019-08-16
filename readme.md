@@ -8,22 +8,16 @@ Without the need for a database, deterministically bucket users into A/B tests.
 
 ## Install:
 
-Ensure you have python3 and virtualenv installed:
-
 ```
-sudo apt install python3.7 python3-venv python3.7-venv
+pip install ab
 ```
 
-Then make the virtualenv, install any dependencies (there aren't any at the moment), and run the unit tests.
-
-```bash
-make venv deps test
-```
+Thanks to Delvian for graciously donating the pip module name at https://pypi.org/project/ab/!
 
 ## Example A/B Usage:
 
 ```python
-import ab
+from ab import ab
 
 # Define test & buckets
 TEST_NAME = 'MY_TEST_V1'
@@ -74,7 +68,7 @@ export AB_DB=0
 
 
 ```python
-import mab
+from ab import mab
 
 # Define test & buckets
 TEST_NAME = 'MY_TEST_V2'
@@ -103,4 +97,24 @@ def get_button_color():
 # Record success
 def button_clicked(bucket):
     mab.success(bucket)
+```
+
+## Development
+
+Ensure you have python3 and virtualenv installed:
+
+```
+sudo apt install python3.7 python3-venv python3.7-venv
+```
+
+Then make the virtualenv, install any dependencies (there aren't any at the moment), and run the unit tests.
+
+```bash
+make venv deps test
+```
+
+## Publish new version to PyPI
+
+```
+make setup
 ```
