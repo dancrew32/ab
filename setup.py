@@ -1,12 +1,14 @@
-from distutils.core import setup
+import setuptools
 
-setup(
+
+setuptools.setup(
     name='ab',
     author='Dan Masquelier',
     author_email='dancrew32+ab@gmail.com',
     url='https://github.com/dancrew32/ab/',
-    version='0.1dev',
+    version='1.0',
     packages=['ab'],
     license='Unlicense',
-    description='Easy A/B Test Bucketing',
+    description='A/B Testing Framework for Python with optional Multi-armed bandit implementation',
+    long_description='See usage here: https://github.com/dancrew32/ab/',
 )
