@@ -1,6 +1,6 @@
 import unittest
 
-import stats
+from ab import stats
 
 
 class StatsTestCase(unittest.TestCase):

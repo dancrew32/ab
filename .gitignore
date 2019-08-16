@@ -4,3 +4,5 @@ venv
 redis-stable
 dump.rdb
 .vscode
+build
+dist

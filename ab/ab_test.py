@@ -2,7 +2,7 @@ import collections
 import uuid
 import unittest
 
-import ab
+from ab import ab
 
 
 class ABTestCase(unittest.TestCase):

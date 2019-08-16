@@ -3,27 +3,27 @@ import collections
 import unittest
 from unittest import mock
 
-import store_mock
-import mab
-import stats
+from ab import store_mock
+from ab import mab
+from ab import stats
 
 
 class MultiArmedBanditTestCase(unittest.TestCase):
 
     def test_trial(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             self.assertEqual(mab.trial('my_test_v1', 'control'), 1)
             self.assertEqual(mab.trial('my_test_v1', 'control'), 2)
 
     def test_success(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             self.assertEqual(mab.success('my_test_v1', 'control'), 1)
             self.assertEqual(mab.success('my_test_v1', 'control'), 2)
 
     def test_get_state_default(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -37,7 +37,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant2'][mab.KEY_SUCCESSES], 0)
 
     def test_get_state_with_tuples_default(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -51,7 +51,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant2'][1], 0)
 
     def test_get_state_used(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -72,7 +72,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant2'][mab.KEY_SUCCESSES], 0)
 
     def test_get_state_with_tuples_used(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -93,7 +93,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(data['variant2'][1], 0)
 
     def test_cold_start_exploit_explores(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -108,7 +108,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_exploit_variant_1_single_trial_still_exploring(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -124,7 +124,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_exploit_variant_1_three_trials_still_exploring(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -142,7 +142,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_exploit_variant_1_one_trial_with_begins_exploitation(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -159,7 +159,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_exploit_two_variants_with_success(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -178,7 +178,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_exploit_all_buckets_with_success(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -199,7 +199,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_variant_dominates(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -226,7 +226,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
             self.assertEqual(sum(seen.values()), 1000)
 
     def test_variant_dominates_low_exploration(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -256,7 +256,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
     # If it breaks, enable this because random is random.
     # @unittest.skip('comment & run: make stress_test_mab')
     def test_simulate_experiment(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']
@@ -285,7 +285,7 @@ class MultiArmedBanditTestCase(unittest.TestCase):
     # If it breaks, enable this because random is random.
     # @unittest.skip('comment & run: make stress_test_mab')
     def test_simulate_experiment_variant1_outperforms(self):
-        with mock.patch('store.get') as store_patch:
+        with mock.patch('ab.store.get') as store_patch:
             store_patch.return_value = store_mock.MockRedis()
             test_name = 'my_test_v1'
             buckets = ['control', 'variant1', 'variant2']

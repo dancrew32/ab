@@ -2,7 +2,7 @@ from typing import List, Tuple, Dict
 import logging
 import random
 
-import store
+from ab import store
 
 NAMESPACE = 'mab'
 KEY_TRIALS = 'trials'

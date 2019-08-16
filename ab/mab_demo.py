@@ -1,4 +1,4 @@
-import mab
+from ab import mab
 
 TEST_NAME = 'MY_DEMO_TEST_V1'
 TEST_CONTROL = 'control'
