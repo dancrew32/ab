@@ -96,7 +96,7 @@ def get_button_color():
 
 # Record success
 def button_clicked(bucket):
-    mab.success(bucket)
+    mab.success(test=TEST_NAME, bucket=bucket)
 ```
 
 ## Development
