@@ -1,8 +1,21 @@
+# Python cache
 *.pyc
 __pycache__
+
+# Virtualenv
 venv
+
+# VSCode
+.vscode
+
+# Redis
 redis-stable
 dump.rdb
-.vscode
+
+# Redis data persistance
+data
+
+# pip module deployment
 build
 dist
+ab.egg-info

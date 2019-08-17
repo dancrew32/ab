@@ -1,3 +1,9 @@
+make:
+	vim makefile
+
+up:
+	docker-compose up --build
+
 venv:
 	virtualenv -p python3 venv
 

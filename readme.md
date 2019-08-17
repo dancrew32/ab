@@ -21,26 +21,18 @@ from ab import ab
 
 # Define test & buckets
 TEST_NAME = 'MY_TEST_V1'
-TEST_CONTROL = 'control'
-TEST_VARIANT1 = 'variant1'
-TEST_VARIANT2 = 'variant2'
-TEST_BUCKETS = (
-    TEST_CONTROL,
-    TEST_VARIANT1,
-    TEST_VARIANT2,
-)
+TEST_BUCKET_TO_COLOR = {
+    'control': 'green',
+    'variant1': 'red',
+    'variant2': 'blue',
+}
 
 
 # Implemention
 def get_button_color(user_id):
-    bucket = ab.get_bucket(user_id, test=TEST_NAME, buckets=TEST_BUCKETS)
-    if bucket == TEST_CONTROL:
-        return 'green'
-    if bucket == TEST_VARIANT1:
-        return 'red'
-    if bucket == TEST_VARIANT2:
-        return 'blue'
-    raise ab.ABTestError(f'Unexpected bucket {bucket}')
+    buckets = TEST_BUCKET_TO_COLOR.keys()
+    bucket = ab.get_bucket(user_id, test=TEST_NAME, buckets=buckets)
+		return TEST_BUCKET_TO_COLOR[bucket]
 ```
 
 Thanks to Alexander Ejbekov for the allocation technique:
@@ -50,54 +42,41 @@ https://stackoverflow.com/a/23846715/61410
 
 ## Example Multi-Armed Bandit Usage:
 
-https://en.wikipedia.org/wiki/Multi-armed_bandit
-
-If you don't already have redis installed & running:
-
-```bash
-make redis_install redis_start
-```
-
-You may want to adjust environment variables to match your redis configuration.
-
-```bash
-export AB_HOST=localhost
-export AB_PORT=6379
-export AB_DB=0
-```
-
+https://en.wikipedia.org/wiki/Multi-armed bandit
 
 ```python
 from ab import mab
 
 # Define test & buckets
 TEST_NAME = 'MY_TEST_V2'
-TEST_CONTROL = 'control'
-TEST_VARIANT1 = 'variant1'
-TEST_VARIANT2 = 'variant2'
-TEST_BUCKETS = (
-    TEST_CONTROL,
-    TEST_VARIANT1,
-    TEST_VARIANT2,
-)
+TEST_BUCKET_TO_COLOR = {
+    'control': 'green',
+    'variant1': 'red',
+    'variant2': 'blue',
+}
 
 
 # Implemention
 def get_button_color():
-    bucket = mab.get_bucket(test=TEST_NAME, buckets=TEST_BUCKETS)
-    if bucket == TEST_CONTROL:
-        return ('green', bucket)
-    if bucket == TEST_VARIANT1:
-        return ('red', bucket)
-    if bucket == TEST_VARIANT2:
-        return ('blue', bucket)
-    raise mab.MABTestError(f'Unexpected bucket {bucket}')
+    buckets = TEST_BUCKET_TO_COLOR.keys()
+    bucket = mab.get_bucket(test=TEST_NAME, buckets=buckets)
+		return TEST_BUCKET_TO_COLOR[bucket]
 
 
 # Record success
 def button_clicked(bucket):
-    mab.success(bucket)
+    mab.success(test=TEST_NAME, bucket=bucket)
 ```
+
+## Demo MAB app:
+
+```bash
+git clone https://github.com/dancrew32/ab.git ab
+cd ab
+make up
+```
+
+Then visit http://localhost:5000
 
 ## Development
 
