@@ -32,7 +32,7 @@ TEST_BUCKET_TO_COLOR = {
 def get_button_color(user_id):
     buckets = TEST_BUCKET_TO_COLOR.keys()
     bucket = ab.get_bucket(user_id, test=TEST_NAME, buckets=buckets)
-		return TEST_BUCKET_TO_COLOR[bucket]
+    return TEST_BUCKET_TO_COLOR[bucket]
 ```
 
 Thanks to Alexander Ejbekov for the allocation technique:
@@ -60,7 +60,7 @@ TEST_BUCKET_TO_COLOR = {
 def get_button_color():
     buckets = TEST_BUCKET_TO_COLOR.keys()
     bucket = mab.get_bucket(test=TEST_NAME, buckets=buckets)
-		return TEST_BUCKET_TO_COLOR[bucket]
+    return TEST_BUCKET_TO_COLOR[bucket]
 
 
 # Record success
@@ -69,6 +69,11 @@ def button_clicked(bucket):
 ```
 
 ## Demo MAB app:
+
+You'll need `Docker` running and `docker-compose`.
+
+* Install Docker: https://docs.docker.com/install/
+* Install docker-compose: https://docs.docker.com/compose/install/
 
 ```bash
 git clone https://github.com/dancrew32/ab.git ab
